@@ -20,15 +20,15 @@ fun main() {
     sudoku.print()
 
     println("Solution:")
-    solve(sudoku)
+    sudoku.solve()
     sudoku.print()
-
     if (!sudoku.isValid()) {
-        error("Solution of sudoku is not valid")
+        error("Solved sudoku is not valid")
     }
 }
 
-fun solve(sudoku: Sudoku) {
+fun Sudoku.solve() {
+    val sudoku = this
     val solutionStorage = mutableMapOf<Pair<Int, Int>, List<Int>>()
 
     for (iteration in 1..500) {
