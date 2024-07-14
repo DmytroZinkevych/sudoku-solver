@@ -25,6 +25,8 @@ fun main() {
 }
 
 fun solve(sudoku: Sudoku) {
+    val solutionStorage = mutableMapOf<Pair<Int, Int>, List<Int>>()
+
     for (iteration in 1..500) {
         var updateHappened = false
         for (rowIndex in 0..<sudoku.size) {
@@ -33,12 +35,17 @@ fun solve(sudoku: Sudoku) {
                 if (n != 0) {
                     continue
                 }
-                val possibleSolutions =
-                    (1..sudoku.size)
+                val rowCol = Pair(rowIndex, colIndex)
+                val possibleSolutions = solutionStorage
+                    .computeIfAbsent(rowCol) { (1..sudoku.size).toList() }
                         .filter { sudoku.fitsInPosition(it, rowIndex, colIndex) }
+
                 if (possibleSolutions.size == 1) {
                     sudoku.rows[rowIndex][colIndex] = possibleSolutions.first()
                     updateHappened = true
+                    solutionStorage.remove(rowCol)
+                } else {
+                    solutionStorage[rowCol] = possibleSolutions
                 }
             }
         }
