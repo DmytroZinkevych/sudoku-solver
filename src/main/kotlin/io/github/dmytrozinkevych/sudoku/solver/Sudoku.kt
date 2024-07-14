@@ -19,6 +19,45 @@ class Sudoku(
         return colNumberMin..colNumberMax
     }
 
+    fun isValid(): Boolean {
+        val sudoku = this
+        val rowsAreValid = sudoku.rows
+            .asSequence()
+            .map { it.toSet() }
+            .all { it.size == sudoku.size && it.min() == 1 && it.max() == sudoku.size }
+
+        val colsAreValid = (0..<sudoku.size)
+            .asSequence()
+            .map { col ->
+                sudoku.rows
+                    .asSequence()
+                    .map { row -> row[col] }
+                    .toSet()
+            }
+            .all { it.size == sudoku.size && it.min() == 1 && it.max() == sudoku.size }
+
+        val squaresAreValid = (0..<sudoku.size step widthOfSquare)
+            .asSequence()
+            .flatMap { row ->
+                (0..<sudoku.size step heightOfSquare)
+                    .asSequence()
+                    .map { col -> Pair(row, col) }
+            }
+            .map { rowCol ->
+                (getSquareRowRange(rowCol.first))
+                    .asSequence()
+                    .flatMap { row ->
+                        getSquareColRange(rowCol.second)
+                            .asSequence()
+                            .map { col -> sudoku.rows[row][col] }
+                    }
+                    .toSet()
+            }
+            .all { it.size == sudoku.size && it.min() == 1 && it.max() == sudoku.size }
+
+        return rowsAreValid && colsAreValid && squaresAreValid
+    }
+
     fun print() {
         println(toString())
     }

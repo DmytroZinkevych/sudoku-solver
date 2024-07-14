@@ -22,6 +22,10 @@ fun main() {
     println("Solution:")
     solve(sudoku)
     sudoku.print()
+
+    if (!sudoku.isValid()) {
+        error("Solution of sudoku is not valid")
+    }
 }
 
 fun solve(sudoku: Sudoku) {
