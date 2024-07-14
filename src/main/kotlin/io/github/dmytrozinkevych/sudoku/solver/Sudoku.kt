@@ -3,9 +3,25 @@ package io.github.dmytrozinkevych.sudoku.solver
 class Sudoku(
     val rows: Array<Array<Int>>
 ) {
-    val widthOfSquare = 3
-    val heightOfSquare = 3
+    private val widthOfSquare = 3
+    private val heightOfSquare = 3
     val size = rows.size
+
+    fun getSquareRowRange(rowNumber: Int): IntRange {
+        val rowNumberMin = (rowNumber / widthOfSquare) * widthOfSquare
+        val rowNumberMax = rowNumberMin + widthOfSquare - 1
+        return rowNumberMin..rowNumberMax
+    }
+
+    fun getSquareColRange(colNumber: Int): IntRange {
+        val colNumberMin = (colNumber / heightOfSquare) * heightOfSquare
+        val colNumberMax = colNumberMin + heightOfSquare - 1
+        return colNumberMin..colNumberMax
+    }
+
+    fun print() {
+        println(toString())
+    }
 
     override fun toString() =
         buildString {
@@ -46,8 +62,4 @@ class Sudoku(
         } else {
             "$num "
         }
-
-    fun print() {
-        println(toString())
-    }
 }

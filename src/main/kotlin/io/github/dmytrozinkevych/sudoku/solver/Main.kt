@@ -68,14 +68,8 @@ fun Sudoku.existsInColumn(number: Int, colNumber: Int) =
     rows.any { it[colNumber] == number }
 
 fun Sudoku.existsInSquare(number: Int, rowNumber: Int, colNumber: Int): Boolean {
-    val rowNumberMin = (rowNumber / widthOfSquare) * widthOfSquare
-    val rowNumberMax = rowNumberMin + widthOfSquare - 1
-
-    val colNumberMin = (colNumber / heightOfSquare) * heightOfSquare
-    val colNumberMax = colNumberMin + heightOfSquare - 1
-
-    for (rowIndex in rowNumberMin..rowNumberMax) {
-        for (colIndex in colNumberMin..colNumberMax) {
+    for (rowIndex in getSquareRowRange(rowNumber)) {
+        for (colIndex in getSquareColRange(colNumber)) {
             if (number == rows[rowIndex][colIndex]) {
                 return true
             }
@@ -83,6 +77,3 @@ fun Sudoku.existsInSquare(number: Int, rowNumber: Int, colNumber: Int): Boolean 
     }
     return false
 }
-
-
-
